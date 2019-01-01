@@ -2,6 +2,7 @@
 Pod::Spec.new do |s|
   s.name             = "URLRequest-cURL"
   s.version          = "0.0.2"
+  s.swift_version    = '4.2'
   s.summary          = "Creates cURL Command from URLRequest"
   s.description      = <<-DESC
 Features
@@ -11,7 +12,7 @@ DESC
   s.homepage         = "https://github.com/depoon/URLRequest-cURL"
   s.license          = 'MIT'
   s.author           = { "depoon" => "de_poon@hotmail.com" }
-  s.source           = { :git => "https://github.com/depoon/URLRequest-cURL", :tag => s.version.to_s }
+  s.source           = { :git => "https://github.com/depoon/URLRequest-cURL.git", :tag => s.version.to_s }
 
   s.platform     = :ios, '10.0'
   s.requires_arc = true
