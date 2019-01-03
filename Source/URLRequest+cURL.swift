@@ -58,7 +58,7 @@ extension URLRequest {
     }
     
     public func cURLBody() -> String? {
-        guard var httpBodyString = self.getHttpBodyString(request: self) else {
+        guard var httpBodyString = self.getHttpBodyString() else {
             return nil
         }
         if let contentType = self.allHTTPHeaderFields?["Content-Type"],
@@ -79,18 +79,18 @@ extension URLRequest {
         return .prettyPrinted
     }
     
-    fileprivate func getHttpBodyString(request: URLRequest) -> String? {
-        if let httpBodyString = self.getHttpBodyStream(request: request) {
+    public func getHttpBodyString() -> String? {
+        if let httpBodyString = self.getHttpBodyStream() {
             return httpBodyString
         }
-        if let httpBodyString = self.getHttpBody(request: request) {
+        if let httpBodyString = self.getHttpBody() {
             return httpBodyString
         }
         return nil
     }
     
-    fileprivate func getHttpBodyStream(request: URLRequest) -> String? {
-        guard let httpBodyStream = request.httpBodyStream else {
+    public func getHttpBodyStreamData() -> Data? {
+        guard let httpBodyStream = self.httpBodyStream else {
             return nil
         }
         let data = NSMutableData()
@@ -105,11 +105,18 @@ extension URLRequest {
                 data.append(&buffer, length: length)
             }
         }
+        return data as Data
+    }
+    
+    public func getHttpBodyStream() -> String? {
+        guard let data = self.getHttpBodyStreamData() else {
+            return nil
+        }
         return NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue) as String?
     }
     
-    fileprivate func getHttpBody(request: URLRequest) -> String? {
-        guard let httpBody = request.httpBody, httpBody.count > 0 else {
+    public func getHttpBody() -> String? {
+        guard let httpBody = self.httpBody, httpBody.count > 0 else {
             return nil
         }
         guard let httpBodyString = self.getStringFromHttpBody(httpBody: httpBody) else {
